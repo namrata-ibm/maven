@@ -55,5 +55,5 @@ jobs:
          # ./mvnw verify -e -B -V
          # ls -la apache-maven/target
          sudo apt-get install -y graphviz
-         mvn verify site -e -B -V -Preporting
+         # mvn verify site -e -B -V -Preporting
          mvn install -e -B -V -Prun-its,embedded
