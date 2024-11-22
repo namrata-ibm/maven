@@ -54,6 +54,6 @@ jobs:
          mvn --errors --batch-mode --show-version org.apache.maven.plugins:maven-wrapper-plugin:3.3.2:wrapper "-Dmaven=4.0.0-beta-4"
          # ./mvnw verify -e -B -V
          # ls -la apache-maven/target
-         sudo apt-get install graphviz
+         sudo apt-get install -y graphviz
          mvn verify site -e -B -V -Preporting
          mvn install -e -B -V -Prun-its,embedded
