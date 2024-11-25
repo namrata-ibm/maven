@@ -41,6 +41,7 @@ jobs:
         distro: ubuntu22.04
         run: | 
          ls -la
+         sudo rm -rf build-log.txt
          apt-get update -y && DEBIAN_FRONTEND=noninteractive apt-get install -y wget tar curl sudo
          curl -SL -o temurin_runtime.tar.gz  https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.7%2B7/OpenJDK17U-jdk_s390x_linux_hotspot_17.0.7_7.tar.gz
          sudo mkdir -p /opt/java /opt/maven
