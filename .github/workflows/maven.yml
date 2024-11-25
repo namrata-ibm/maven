@@ -50,10 +50,8 @@ jobs:
          java -version
          wget https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.8.8/apache-maven-3.8.8-bin.tar.gz
          sudo tar -zxf apache-maven-3.8.8-bin.tar.gz -C /opt/maven --strip-components 1
-         tar -xzf apache-maven-3.8.8-bin.tar.gz
          rm -rf apache-maven-3.8.8-bin.tar.gz
-         ls /opt/
-         ls /opt/maven
+         ls 
          export PATH=/opt/maven/bin/:$PATH
          mvn --errors --batch-mode --show-version org.apache.maven.plugins:maven-wrapper-plugin:3.3.2:wrapper "-Dmaven=4.0.0-beta-4"
          ./mvnw verify -e -B -V
