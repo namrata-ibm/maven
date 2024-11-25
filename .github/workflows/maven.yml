@@ -43,10 +43,10 @@ jobs:
          ls -la
          apt-get update -y && DEBIAN_FRONTEND=noninteractive apt-get install -y wget tar curl sudo
          sudo rm -rf build-log.txt
-         curl -SL -o temurin_runtime.tar.gz  https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.7%2B7/OpenJDK17U-jdk_s390x_linux_hotspot_17.0.7_7.tar.gz
          sudo mkdir -p /opt/java /opt/maven
-         sudo tar -zxf temurin_runtime.tar.gz -C /opt/java --strip-components 1
-         rm -rf temurin_runtime.tar.gz
+         sudo wget -O temurin21.tar.gz https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.2%2B13/OpenJDK21U-jdk_s390x_linux_hotspot_21.0.2_13.tar.gz
+         sudo tar -C /opt/java -xzf temurin21.tar.gz --strip 1
+         rm -rf temurin21.tar.gz
          export JAVA_HOME=/opt/java
          export PATH=$JAVA_HOME/bin:$PATH
          java -version
