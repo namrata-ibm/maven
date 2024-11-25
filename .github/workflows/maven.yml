@@ -55,7 +55,7 @@ jobs:
          rm -rf apache-maven-3.8.8-bin.tar.gz
          ls -la
          export PATH=/opt/maven/bin/:$PATH
-         # mvn --errors --batch-mode --show-version org.apache.maven.plugins:maven-wrapper-plugin:3.3.2:wrapper "-Dmaven=4.0.0-beta-4"
+         mvn --errors --batch-mode --show-version org.apache.maven.plugins:maven-wrapper-plugin:3.3.2:wrapper "-Dmaven=4.0.0-beta-4"
          ./mvnw verify -e -B -V
          sudo apt-get install -y graphviz
          mvn verify site -e -B -V -Preporting
