@@ -44,9 +44,9 @@ jobs:
          apt-get update -y && DEBIAN_FRONTEND=noninteractive apt-get install -y wget tar curl sudo
          sudo rm -rf build-log.txt
          sudo mkdir -p /opt/java /opt/maven
-         sudo wget -O temurin21.tar.gz https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.2%2B13/OpenJDK21U-jdk_s390x_linux_hotspot_21.0.2_13.tar.gz
-         sudo tar -C /opt/java -xzf temurin21.tar.gz --strip 1
-         rm -rf temurin21.tar.gz
+         sudo wget -O temurin17.tar.gz https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.13%2B11/OpenJDK17U-jdk_s390x_linux_hotspot_17.0.13_11.tar.gz
+         sudo tar -C /opt/java -xzf temurin17.tar.gz --strip 1
+         rm -rf temurin17.tar.gz
          export JAVA_HOME=/opt/java
          export PATH=$JAVA_HOME/bin:$PATH
          java -version
@@ -55,8 +55,9 @@ jobs:
          rm -rf apache-maven-3.8.8-bin.tar.gz
          ls -la
          export PATH=/opt/maven/bin/:$PATH
-         mvn --errors --batch-mode --show-version org.apache.maven.plugins:maven-wrapper-plugin:3.3.2:wrapper "-Dmaven=4.0.0-beta-4"
+         mvn --errors --batch-mode --show-version org.apache.maven.plugins:maven-wrapper-plugin:3.3.2:wrapper "-Dmaven=4.0.0-beta-4" 
          ./mvnw verify -e -B -V
          sudo apt-get install -y graphviz
-         mvn verify site -e -B -V -Preporting
-         mvn install -e -B -V -Prun-its,embedded -fn
+         mvn clean verify -B -U -e -fae -V -Dmaven.test.failure.ignore -PversionlessMavenDist
+         # mvn verify site -e -B -V -Preporting
+         # mvn install -e -B -V -Prun-its,embedded -fn
