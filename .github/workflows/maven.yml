@@ -38,14 +38,6 @@ jobs:
       uses: actions/checkout@v4
       with:
         persist-credentials: false
-    - name: Download Maven distribution
-      uses: actions/download-artifact@v4
-      with:
-        name: maven-distributions
-        path: maven-dist
-    - name: List downloaded files
-      shell: bash
-      run: ls -la maven-dist
     - name: Run build 
       uses: uraimo/run-on-arch-action@v2.8.1
       with:
@@ -71,11 +63,11 @@ jobs:
          export JAVA_HOME=/opt/java
          export PATH=$JAVA_HOME/bin:$PATH
          java -version
-         # wget https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.8.8/apache-maven-3.8.8-bin.tar.gz
-         # sudo tar -zxf apache-maven-3.8.8-bin.tar.gz -C /opt/maven --strip-components 1
-         # rm -rf apache-maven-3.8.8-bin.tar.gz
+         wget https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.8.8/apache-maven-3.8.8-bin.tar.gz
+         sudo tar -zxf apache-maven-3.8.8-bin.tar.gz -C /opt/maven --strip-components 1
+         rm -rf apache-maven-3.8.8-bin.tar.gz
          ls -la
-         # export PATH=/opt/maven/bin/:$PATH
+         export PATH=/opt/maven/bin/:$PATH
          # mvn --errors --batch-mode --show-version org.apache.maven.plugins:maven-wrapper-plugin:3.3.2:wrapper "-Dmaven=4.0.0-beta-4" 
          # ./mvnw verify -e -B -V
          # sudo apt-get install -y graphviz
