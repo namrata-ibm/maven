@@ -34,30 +34,48 @@ jobs:
       matrix:
         java: ['17', '21']
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout maven
+      uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+    - name: Download Maven distribution
+      uses: actions/download-artifact@v4
+      with:
+        name: maven-distributions
+        path: maven-dist
+    - name: List downloaded files
+      shell: bash
+      run: ls -la maven-dist
     - name: Run build 
       uses: uraimo/run-on-arch-action@v2.8.1
       with:
         arch: s390x
         distro: ubuntu22.04
-        run: | 
-         ls -la
-         echo "${{ matrix.java }}"
-         ls 
+        run: |  
          apt-get update -y && DEBIAN_FRONTEND=noninteractive apt-get install -y wget tar curl sudo
+         mkdir -p maven-local
+         tar xzf maven-dist/apache-maven-bin.tar.gz -C maven-local --strip-components 1
+         echo "MAVEN_HOME=$PWD/maven-local" >> $GITHUB_ENV
+         echo "$PWD/maven-local/bin" >> $GITHUB_PATH
          sudo rm -rf build-log.txt
          sudo mkdir -p /opt/java /opt/maven
-         sudo wget -O temurin17.tar.gz https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.13%2B11/OpenJDK17U-jdk_s390x_linux_hotspot_17.0.13_11.tar.gz
-         sudo tar -C /opt/java -xzf temurin17.tar.gz --strip 1
-         rm -rf temurin17.tar.gz
+         if [ "${{ matrix.java }}" = "17" ]; then
+            sudo wget -O temurin17.tar.gz https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.13%2B11/OpenJDK17U-jdk_s390x_linux_hotspot_17.0.13_11.tar.gz
+            sudo tar -C /opt/java -xzf temurin17.tar.gz --strip 1
+            rm -rf temurin17.tar.gz
+          else
+            sudo wget -O temurin21.tar.gz https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.2%2B13/OpenJDK21U-jdk_s390x_linux_hotspot_21.0.2_13.tar.gz
+            sudo tar -C /opt/java -xzf temurin21.tar.gz --strip 1
+            rm -rf temurin21.tar.gz
+          fi
          export JAVA_HOME=/opt/java
          export PATH=$JAVA_HOME/bin:$PATH
          java -version
-         wget https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.8.8/apache-maven-3.8.8-bin.tar.gz
-         sudo tar -zxf apache-maven-3.8.8-bin.tar.gz -C /opt/maven --strip-components 1
-         rm -rf apache-maven-3.8.8-bin.tar.gz
+         # wget https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.8.8/apache-maven-3.8.8-bin.tar.gz
+         # sudo tar -zxf apache-maven-3.8.8-bin.tar.gz -C /opt/maven --strip-components 1
+         # rm -rf apache-maven-3.8.8-bin.tar.gz
          ls -la
-         export PATH=/opt/maven/bin/:$PATH
+         # export PATH=/opt/maven/bin/:$PATH
          # mvn --errors --batch-mode --show-version org.apache.maven.plugins:maven-wrapper-plugin:3.3.2:wrapper "-Dmaven=4.0.0-beta-4" 
          # ./mvnw verify -e -B -V
          # sudo apt-get install -y graphviz
