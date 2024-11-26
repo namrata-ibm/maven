@@ -29,6 +29,10 @@ permissions: {}
 jobs:
   build-on-z:
     runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        java: ['17', '21']
     steps:
     - uses: actions/checkout@v4
     - name: Run build 
@@ -38,6 +42,8 @@ jobs:
         distro: ubuntu22.04
         run: | 
          ls -la
+         echo "${{ matrix.java }}"
+         ls 
          apt-get update -y && DEBIAN_FRONTEND=noninteractive apt-get install -y wget tar curl sudo
          sudo rm -rf build-log.txt
          sudo mkdir -p /opt/java /opt/maven
