@@ -45,10 +45,6 @@ jobs:
         distro: ubuntu22.04
         run: |  
          apt-get update -y && DEBIAN_FRONTEND=noninteractive apt-get install -y wget tar curl sudo
-         mkdir -p maven-local
-         tar xzf maven-dist/apache-maven-bin.tar.gz -C maven-local --strip-components 1
-         echo "MAVEN_HOME=$PWD/maven-local" >> $GITHUB_ENV
-         echo "$PWD/maven-local/bin" >> $GITHUB_PATH
          sudo rm -rf build-log.txt
          sudo mkdir -p /opt/java /opt/maven
          if [ "${{ matrix.java }}" = "17" ]; then
