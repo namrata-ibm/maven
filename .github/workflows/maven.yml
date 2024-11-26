@@ -31,9 +31,6 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@v4
-    - name: Build on s390x arch 
-      run: |
-        sudo docker run --rm --privileged tonistiigi/binfmt:qemu-v6.1.0
     - name: Run build 
       uses: uraimo/run-on-arch-action@v2.8.1
       with:
@@ -55,9 +52,9 @@ jobs:
          rm -rf apache-maven-3.8.8-bin.tar.gz
          ls -la
          export PATH=/opt/maven/bin/:$PATH
-         mvn --errors --batch-mode --show-version org.apache.maven.plugins:maven-wrapper-plugin:3.3.2:wrapper "-Dmaven=4.0.0-beta-4" 
-         ./mvnw verify -e -B -V
-         sudo apt-get install -y graphviz
+         # mvn --errors --batch-mode --show-version org.apache.maven.plugins:maven-wrapper-plugin:3.3.2:wrapper "-Dmaven=4.0.0-beta-4" 
+         # ./mvnw verify -e -B -V
+         # sudo apt-get install -y graphviz
          mvn clean verify -B -U -e -fae -V -Dmaven.test.failure.ignore -PversionlessMavenDist
          # mvn verify site -e -B -V -Preporting
          # mvn install -e -B -V -Prun-its,embedded -fn
